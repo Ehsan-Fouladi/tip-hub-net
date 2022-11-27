@@ -1,0 +1,70 @@
+{% load static %}
+<!-- top-header -->
+<div class="shadow position-fixed w-100 h-100 d-md-none d-lg-none"></div>
+<!-- top-header -->
+<header class="position-relative">
+    <div class="main-header position-relative">
+
+        <div class="nav-header-box mob1 d-md-flex d-lg-flex align-items-center justify-content-between">
+
+            <div class="d-flex flex-column flex-md-row align-items-center pr-md-4">
+                <div class="logo d-flex justify-content-center align-items-center ml-3">
+                    <a href="#"><img src="{% static 'image/logo.png' %}" class="logo-img img-fluid"
+                                     alt=""/></a>
+                </div>
+                <!-- SEARCH -->
+                <form action="{% url "home:search" %}" method="GET" class="nav-search-btn">
+                    <input name="q" type="text" placeholder="جستجو">
+                    <button type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+                <!-- END SEARCH -->
+
+            </div>
+            <div class="d-block d-md-flex align-items-center pl-md-4">
+                <!-- NOTIFICATIONS -->
+                <div class="dropdown notification-box">
+                    <div class="position-relative d-none d-md-block " type="button" id="dropdownMenuButton"
+                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="{% static 'image/notification.png' %}" class="notification-img" alt="">
+                        <div class="badge">2</div>
+                    </div>
+                    <div class="dropdown-menu notification-menu-items custom-bg"
+                         aria-labelledby="dropdownMenuButton">
+                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </a>
+                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید </a>
+                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید سادگی</a>
+
+                    </div>
+                </div>
+                <!-- END NOTIFICATIONS -->
+
+                <div class="header-login d-none d-md-block">
+                    <div class="notification-box dropdown">
+                        <a href="" class="btn login-btn" type="button" id="dropdownMenuButton"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% if request.user.image %}
+                                <img src="{{ request.user.image.url }}" alt="image">
+                            {% else %}
+                                <img src="{% static 'image/sutdent-prof.png' %}" alt="image">
+                            {% endif %}
+                        </a>
+                        <div class="dropdown-menu account-menu-items custom-bg"
+                             aria-labelledby="dropdownMenuButton">
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url "account:panel_user" %}" >پنل کاربری</a>
+                                <a class="#" href="{% url "account:logout" %}"> خروج</a>
+                            {% else %}
+                                <a class="#" href="{% url "account:register_login" %}"><i class=" fa fa-account"></i>ثبت نام/ورود</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</header>
+

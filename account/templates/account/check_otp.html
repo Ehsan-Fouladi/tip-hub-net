@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main>
+    <section class="py-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-sm-9 col-md-7 col-lg-5">
+                    <div class="custom-bg p-2">
+
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.errors }}
+                            <div class="field">
+                                <i class="fa fa-code"></i>
+                               {{ form.code }}
+                            </div>
+                            <div class="my-3">
+                                <button class="btn custom-btn w-100">تاید</button>
+                            </div>
+                          
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

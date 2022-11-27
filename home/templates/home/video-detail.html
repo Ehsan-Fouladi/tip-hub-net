@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ video.title }}{% endblock %}
+{% block content %}
+<main>
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div>
+                        <!-- video -->
+                        <div class="video-player-box">
+                            <div class="video-icon">
+                                <div class="btn video-btn" onclick="playvideo()" id="videobtn">
+                                    <img src="{% static "image/play-video-btn.png" %}" alt="">
+                                </div>
+                            </div>
+                            <div class="video">
+                                <video width="100%" id="myVideo">
+                                    <source src="{{ video.video.url }}" type="video/mp4">
+                                </video>
+                                
+                                <img src="{{ video.image.url }}" width="100%" height="100%"
+                                     class="position-absolute video-poster" alt="">
+
+                                <div class="video-overlay"></div>
+                                <div class="video-description px-2 text-white">
+
+                                    <p>{{ video.time }}</p>
+                                </div>
+                                <h5 class="close-btn" onclick="stopPlayer()">X</h5>
+                            </div>
+                        </div>
+                        <!-- end video -->
+                        <!-- title -->
+                        <h3 class="video-title my-3"> {{ video.body|safe }}
+                        </h3>
+                        <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                            <p class="color78">{{ video.created }}</p>
+                            <div class="d-flex align-items-center view-like">
+                                <div class="mx-3">
+                                    <span>{{ video.views }}</span>
+                                    <i class="fa fa-eye"></i>
+                                </div>
+                                <div>
+                                    <i class="fa fa-heart-o" type='button' aria-hidden="true"></i>
+                                    <!-- <i class="fa fa-heart liked" type='button' aria-hidden="true" ></i> -->
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- description -->
+                        <div class="border-bottom pb-3">
+                            <h4 class="my-3">درباره فیلم</h4>
+                            <p class="color78">{{ video.about_video|safe }}</p>
+                            <div class="labels">
+                                <h4 class="my-3">برچسب ها</h4>
+                                <ul class="d-flex align-items-center">
+                                    <li><a href="#" title="">#گردشگری</a></li>
+                                    <li><a href="#" title="">#تفریحی </a></li>
+                                    <li><a href="#" title="">#دشت نور</a></li>
+                                    <li><a href="#" title="">#مکان های تفریحی</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- end des -->
+
+                        <!-- comments -->
+                        {% if request.user.is_authenticated %}
+                        <div>
+                            <div class="py-3">
+                                <span></span>
+                                <span>نظر</span>
+                            </div>
+
+                            <form action="#" id="comment" method="post">{% csrf_token %}
+                                <input type="hidden" name="parent" id="parent_id" value="">
+                                <textarea class="w-100 p-2 comment-area" name="body" id="body" cols="30" rows="10"
+                                    placeholder="دیدگاه خود را بنویسید"></textarea>
+                                <div class="d-flex align-items-center justify-content-end pt-3">
+                                    <button class="btn custom-btn">ارسال نظر</button>
+                                </div>
+                            </form>
+                            <!-- end comment -->
+                            {% for commit in video.comments.all %}
+                            {% if Comment.parent == None %}
+                            <div class="comment my-3 p-2">
+                                <div class=" d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <img src="{{ request.user.image.url }}" alt="student" class="user-profile">
+                                        <p class="user-name pr-2">{{ commit.user.username }}</p>
+                                    </div>
+
+                                    <p class="comment-date-time">{{ commit.comment_at }}</p>
+                                </div>
+                                <p class="px-4 py-2 comment-text text-justify">{{ commit.body }}</p>
+
+                                <div class="d-flex align-items-center justify-content-end reply" type='button'>
+                                    <i class="fa fa-reply"></i>
+                                    <button class="btn btn-info" onclick="set_value({{ commit.id }})">پاسخ به نظر</button>
+                                </div>
+                            </div>
+                            {% for reply in video.comment.parent.all %}
+                            <div class="comment my-3 p-2 comment-child">
+                                <div class=" d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <img src="{% static "image/sutdent-prof.png" %}" alt="student" class="user-profile">
+                                        <p class="user-name pr-2">{{ reply.user.username }}</p>
+                                    </div>
+
+                                    <p class="comment-date-time">{{ reply.comment_at }}</p>
+                                </div>
+                                <p class="px-4 py-2 comment-text text-justify">{{ reply.body }}</p>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <!-- end comments -->
+                        <!--  -->
+                        <div class="d-flex align-items-center justify-content-center mb-3 pagination">
+                            {% if object_list.has_other_pages %}
+            
+                            {% if object_list.has_next %}
+                            <a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-right"></i></a>
+                            {% endif %}
+            
+                            {% for item in object_list.paginator.page_range %}
+                            {% if object_list.number == item %}
+                            <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="active mx-1">{{ item }}</a>
+                            {% else %}
+                            <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1">{{ item }}</a>
+                            {% endif %}
+                            {% endfor %}
+            
+                            {% if object_list.has_previous %}
+                            <a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-left"></i></a>
+                            {% endif %}
+            
+                            {% endif %}
+                        </div>
+                        <!--  -->
+
+                    </div>
+                </div>
+                <!-- main -->
+                <!-- side -->
+                <aside class="col-md-4 ">
+                    <div class="custom-bg p-2 teacher-card">
+                        <div class="border-bottom py-3 text-center">
+                            <h4>درباره استاد</h4>
+                        </div>
+                        {% if request.user.image %}
+                        <div class="d-flex align-items-center py-3">
+                            <img src="{{ request.user.image.url }}" alt="student" class="teacher-profile">
+                            <p class="user-name pr-2">{{ video.user.author }}</p>
+                        </div>
+                        {% else %}
+                        <div class="d-flex align-items-center py-3">
+                            <img src="{% static "image/sutdent-prof.png" %}" alt="student" class="teacher-profile">
+                            <p class="user-name pr-2">{{ video.user.author }}</p>
+                        </div>
+                        {% endif %}
+                        <p class="color78 teacher-description py-3">{{ video.user.about_user }}</p>
+
+                            <div class="teacher-social-media d-flex align-items-center justify-content-center flex-wrap">
+                                <a href=""> <i class="fa fa-instagram"></i></a>
+                                <a href=""> <i class="fa fa-github"></i></a>
+                                <a href=""> <i class="fa fa-linkedin"></i></a>
+                                <a href=""> <i class="fa fa-twitter"></i></a>
+                            </div>
+                    </div>
+                </aside>
+
+                <!-- end side -->
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script>
+     // comment form
+     function set_value(id) {
+            document.getElementById('parent_id').value = id;
+            window.location.href = "#body";
+        }
+
+        // video-player
+        const videobtn = document.querySelector('.video-btn');
+        const video = document.querySelector('.video');
+        const videotag = document.querySelector('video')
+        const videoDescription = document.querySelector('.video-description')
+        const closeBtn = document.querySelector('.close-btn')
+        const videoPoster = document.querySelector('.video-poster')
+        const videoOverlay = document.querySelector('.video-overlay')
+
+        function stopPlayer() {
+            videobtn.style.display = "block";
+            closeBtn.style.display = 'none';
+            videoPoster.style.display = 'inline'
+            video.style.zIndex = '-1'
+            videotag.pause()
+            videotag.style.borderRadius = '20px'
+            videoDescription.style.display = 'flex'
+            videotag.controls = false
+            videotag.style.borderRadius = '15px'
+            videoOverlay.style.display = 'block'
+        }
+
+        function playvideo() {
+            videobtn.style.display = "none";
+            video.style.zIndex = '22222'
+            videotag.autoplay = true
+            videotag.play()
+            videotag.style.borderRadius = '20px'
+            videotag.controls = true
+            videoDescription.style.display = 'none'
+            closeBtn.style.display = 'block'
+            videoPoster.style.display = 'none'
+            videoOverlay.style.display = 'none'
+        }
+</script>
+{% endblock %}

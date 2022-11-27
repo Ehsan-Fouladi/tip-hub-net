@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main>
+    <section class="py-5">
+        <div class="container">
+           <div class="row d-flex justify-content-center">
+            <div class="col-sm-9 col-md-11 col-lg-10">
+                <div class="user-panel custom-bg">
+                    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="user-panel-box">
+
+                        
+                        <div class="user-panel-profile">
+                            {% if request.user.image %}
+                                <a target="_blank">
+                                    <img src="{{ request.user.image.url }}" alt="image">
+                                </a>
+                            {% else %}
+                                <img src="{% static 'image/sutdent-prof.png' %}" alt="image">
+                            {% endif %}
+                            {{ form.image }}
+                        </div>
+                        <!-- item -->
+                        <div class="user-panel-field">
+                            <i class="fa fa-phone"></i>
+                            {{ form.number }}
+                        </div>
+                        <!-- item -->
+                        <div class="user-panel-field">
+                            <i class="fa fa-user-circle"></i>
+                            {{ form.username }}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 ">
+                        <button type="submit" class="btn custom-btn w-50">اعمال تغییرات</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+           </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

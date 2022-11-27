@@ -1,0 +1,19 @@
+{% load static %}
+
+<html lang="en">
+
+<title>{% block title %}کدیاد{% endblock %}</title>
+{% include 'includes/head.html' %}
+
+<body>
+
+{% include 'includes/header.html' %}
+
+
+{% block content %}{% endblock %}
+
+{% include 'includes/footer.html' %}
+
+</body>
+
+</html>

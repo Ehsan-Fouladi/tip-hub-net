@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}لیست تمامی ویدیو ها{% endblock %}
+{% block content %}
+<main>
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="title-section">همه ویدیوها</h2>
+            </div>
+            <!-- all_video object-list -->
+            <div class="row">
+                {% for video in object_list %}
+                <!-- item -->
+                <div class="col-md-6 col-lg-4 my-2">
+                    <div class="custom-bg">
+                        <div class="video-card">
+                            <a href="{% url 'home:detail' video.id video.slug %}" class="position-relative d-block ">
+                                <img src="{{ video.image.url }}" alt="" class="img-fluid w-100 h-100">
+                                <div class="video-play-btn">
+                                    <i class="fa fa-play"></i>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between video-category-time">
+                                    <h6 class="">موفقیت</h6>
+                                    <span class="vid-time">{{ video.time }}</span>
+                                </div>
+                                <div class="video-card-details">
+                                    <div>
+                                        <span>{{ video.views }}</span>
+                                        <i class="fa fa-eye"></i>
+                                    </div>
+                                    <div>
+                                        <span>22</span>
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                    <div>
+                                        <span>22</span>
+                                        <i class="fa fa-comment"></i>
+                                    </div>
+                                </div>
+                                <div class="article-overlay"></div>
+                            </a>
+
+                        </div>
+                        <a href="#">
+                            <h5 class="video-card-title m-2">{{ video.body|striptags|truncatewords:"25" }}</h5>
+                        </a>
+                        <div class="my-3 pb-3 mx-2">
+                            <i class="fa fa-user  ml-1 "></i>
+                            <span>{{ video.user.username }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- end item -->
+                {% endfor %}
+            </div>
+            <!-- pageintor -->
+            <!-- page_obj -->
+            <div class="d-flex align-items-center justify-content-center mb-3 pagination">
+                {% if object_list.has_other_pages %}
+
+                {% if object_list.has_next %}
+                <a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-right"></i></a>
+                {% endif %}
+
+                {% for item in object_list.paginator.page_range %}
+                {% if object_list.number == item %}
+                <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="active mx-1">{{ item }}</a>
+                {% else %}
+                <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1">{{ item }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if object_list.has_previous %}
+                <a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-left"></i></a>
+                {% endif %}
+
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

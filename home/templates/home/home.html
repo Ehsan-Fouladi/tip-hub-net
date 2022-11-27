@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %} مجله {% endblock %}
+{% block content %}
+
+<nav class="nav-menu nav-menu-pc  d-none d-md-flex px-4" id="navbar">
+    <li id="" class="mx-3 menu-item"><a href="" class="nav-menu-item ">زبان های برنامه نویسی </a>
+        <ul class="sub-menu">
+            <a href="">جاوا</a>
+            <a href="">پایتون </a>
+            <a href="">آیتم</a>
+            <a href=""> آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+        </ul>
+    </li>
+    <li id="" class="mx-3 menu-item"><a href="" class="nav-menu-item">فریمورک </a>
+        <ul class="sub-menu">
+            <a href="">جنگو</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+        </ul>
+    </li>
+    <li id="" class="mx-3 menu-item"><a href="" class="nav-menu-item">طراحی وب</a>
+        <ul class="sub-menu">
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+        </ul>
+    </li>
+    <li id="" class="mx-3 menu-item"><a href="" class="nav-menu-item">مهارت های ارتباطی</a>
+        <ul class="sub-menu">
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+            <a href="">آیتم</a>
+        </ul>
+    </li>
+</nav>
+
+<main>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="title-section">تازه ترین ویدیوها </h2>
+                <a href="{% url "home:video_all" %}" class="btn custom-btn">
+                    نمایش همه
+                </a>
+            </div>
+            <div class="row">
+                {% for video in object_list %}
+                {% if video.status %}
+                <!-- item -->
+                <div class="col-md-6 col-lg-4 my-2">
+                    <div class="custom-bg">
+                        <div class="video-card">
+                            <a href="{% url 'home:detail' video.id video.slug %}" class="position-relative d-block ">
+                                <img src="{{ video.image.url }}" alt="" class="img-fluid w-100 h-100">
+                                <div class="video-play-btn">
+                                    <i class="fa fa-play"></i>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between video-category-time">
+                                    <h6 class="">موفقیت</h6>
+                                    <span class="vid-time">{{ video.time }}</span>
+                                </div>
+                                <div class="video-card-details">
+                                    <div>
+                                        <span>{{ video.views }}</span>
+                                        <i class="fa fa-eye"></i>
+                                    </div>
+                                    <div>
+                                        <span>22</span>
+                                        <i class="fa fa-heart"></i>
+                                    </div>
+                                    <div>
+                                        <span>22</span>
+                                        <i class="fa fa-comment"></i>
+                                    </div>
+                                </div>
+                                <div class="article-overlay"></div>
+                            </a>
+
+                        </div>
+                        <a href="#">
+                            <h5 class="video-card-title m-2">{{ video.body|striptags|truncatewords:"25" }}</h5>
+                        </a>
+                        <div class="my-3 pb-3 mx-2">
+                            <i class="fa fa-user  ml-1 "></i>
+                            <span>{{ video.user.username }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <!-- end item -->
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+{% endblock %}
