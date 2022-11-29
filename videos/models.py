@@ -10,7 +10,7 @@ class Video(models.Model):
     about_video = models.TextField(verbose_name="درباره فیلم")
     video = models.FileField(upload_to="video/", verbose_name='ویدیو')
     image = models.ImageField(upload_to="image/", verbose_name='عکس')
-    views = models.IntegerField(null=True, verbose_name='بازدید')
+    views = models.IntegerField(blank=True, default=0, verbose_name='بازدید')
     created = models.DateTimeField(auto_now_add=True, verbose_name='زمان')
     time = models.TimeField(auto_now_add=True, verbose_name="ساعت")
     status = models.BooleanField(null=True, blank=True, verbose_name="وضیعت")
@@ -45,3 +45,20 @@ class Comment(models.Model):
     class Meta:
         verbose_name = "کامنت"
         verbose_name_plural = "کامنت ها"
+
+
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes", verbose_name="لایک")
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="likes", verbose_name="لایک کاربر")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f'{self.user.username} - {self.video.slug}'
+
+
+    class Meta:
+        verbose_name = "لیک"
+        verbose_name_plural = "لایک ها"
+        ordering = ("created_at",)

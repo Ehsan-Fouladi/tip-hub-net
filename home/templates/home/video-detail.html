@@ -43,10 +43,12 @@
                                     <i class="fa fa-eye"></i>
                                 </div>
                                 <div>
-                                    <i class="fa fa-heart-o" type='button' aria-hidden="true"></i>
-                                    <!-- <i class="fa fa-heart liked" type='button' aria-hidden="true" ></i> -->
+                                    {% if is_liked %}
+                                    <a onclick="like('{{ video.pk }}', '{{ video.slug }}')"><i id="like" class="fa fa-heart" type='button' aria-hidden="true"></i></a>
+                                    {% else %}
+                                    <a onclick="like('{{ video.pk }}', '{{ video.slug }}')"><i id="like" class="fa fa-thumbs-up" type='button' aria-hidden="true"></i></a>
+                                    {% endif %}
                                 </div>
-
                             </div>
 
                         </div>
@@ -70,7 +72,7 @@
                         {% if request.user.is_authenticated %}
                         <div>
                             <div class="py-3">
-                                <span></span>
+                                <span>{{ video.comments.all.count }}</span>
                                 <span>نظر</span>
                             </div>
 
@@ -98,7 +100,7 @@
 
                                 <div class="d-flex align-items-center justify-content-end reply" type='button'>
                                     <i class="fa fa-reply"></i>
-                                    <button class="btn btn-info" onclick="set_value({{ commit.id }})">پاسخ به نظر</button>
+                                    <button class="btn btn-info" onclick="set_value('{{ commit.id }}')">پاسخ به نظر</button>
                                 </div>
                             </div>
                             {% for reply in video.comment.parent.all %}
@@ -180,8 +182,17 @@
     </section>
 
 </main>
-
 <script>
+    function like(slug, pk){
+    var element = document.getElementById('like');
+    $.get(`like/${pk}/${slug}/`).then(response =>{
+        if(response['response'] === "liked"){
+            element.className = "fa fa-heart"
+        }else{
+            element.className = "fa fa-thumbs-up"
+        }
+    })
+}
      // comment form
      function set_value(id) {
             document.getElementById('parent_id').value = id;

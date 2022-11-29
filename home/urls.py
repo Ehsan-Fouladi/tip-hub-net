@@ -7,4 +7,5 @@ urlpatterns = [
     path('<int:pk>/<slug:slug>/', views.VideoDetail, name='detail'),
     path('videolist/', views.VideoList, name='video_all'),
     path('search/', views.Search, name='search'),
+    path('like/<int:pk>/<slug:slug>/', views.likeDetail, name='like'),
 ]

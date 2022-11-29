@@ -11,6 +11,7 @@
             <!-- all_video object-list -->
             <div class="row">
                 {% for video in object_list %}
+                {% if video.status %}
                 <!-- item -->
                 <div class="col-md-6 col-lg-4 my-2">
                     <div class="custom-bg">
@@ -30,11 +31,11 @@
                                         <i class="fa fa-eye"></i>
                                     </div>
                                     <div>
-                                        <span>22</span>
+                                        <span>{{ video.likes.all.count }}</span>
                                         <i class="fa fa-heart"></i>
                                     </div>
                                     <div>
-                                        <span>22</span>
+                                        <span>{{ video.comments.all.count }}</span>
                                         <i class="fa fa-comment"></i>
                                     </div>
                                 </div>
@@ -51,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <!-- end item -->
                 {% endfor %}
             </div>
