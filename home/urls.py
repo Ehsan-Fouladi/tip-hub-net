@@ -8,4 +8,5 @@ urlpatterns = [
     path('videolist/', views.VideoList, name='video_all'),
     path('search/', views.Search, name='search'),
     path('like/<int:pk>/<slug:slug>/', views.likeDetail, name='like'),
+    path('notification/<int:pk>', views.NotificationView.as_view(), name='notification'),
 ]

@@ -6,7 +6,7 @@ from .forms import FormLogin, OtpLoginForm, CzechOtpForm, UserProFileForm, Teach
 import ghasedakpack
 from random import randint
 from .models import Otp, User
-from videos.models import Video
+from videos.models import Video, Notification
 from django.utils.crypto import get_random_string
 from uuid import uuid4
 from .mixins import FieldsMixin , FormValidMixin, UpdateMixin
@@ -90,6 +90,34 @@ class author_about(UpdateView):
     model = User
     form_class = TeacherForm
     template_name = "account/author.html"
+
+# panel Notification admin true
+class NotificationView(ListView):
+    template_name = "account/notification.html"
+
+    def get_queryset(self):
+        if self.request.user.is_admin:
+            superusers = Notification.objects.all()
+            return superusers
+
+# panel Notification admin
+class NotificationUpdate(UpdateView):
+    template_name = "account/notification_update.html"
+    model = Notification
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse('account:notifications')
+
+# panel Notification admin
+class NotificationCreate(CreateView):
+    template_name = "account/notification_create.html"
+    model = Notification
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse('account:notifications')
+
 
 
 def user_logout(request):

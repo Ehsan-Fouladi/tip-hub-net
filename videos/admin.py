@@ -14,3 +14,4 @@ class VideoAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Comment)
 admin.site.register(models.Like)
+admin.site.register(models.Notification)

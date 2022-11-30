@@ -24,20 +24,26 @@
             </div>
             <div class="d-block d-md-flex align-items-center pl-md-4">
                 <!-- NOTIFICATIONS -->
+                {% if request.user.is_authenticated %}
                 <div class="dropdown notification-box">
                     <div class="position-relative d-none d-md-block " type="button" id="dropdownMenuButton"
                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="{% static 'image/notification.png' %}" class="notification-img" alt="">
-                        <div class="badge">2</div>
+                        <div class="badge">{{ request.user.notification.all.count }}</div>
                     </div>
+                    {% if request.user.notification.all %}
                     <div class="dropdown-menu notification-menu-items custom-bg"
                          aria-labelledby="dropdownMenuButton">
-                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ </a>
-                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید </a>
-                        <a class="border-bottom" href="#"> ایپسوم متن ساختگی با تولید سادگی</a>
-
+                         {% for notification in request.user.notification.all|slice:":5" %}
+                            {% if notification.is_admin %}
+                            <a class="border-bottom"
+                            href="{{ notification.get_absulot_url }}"> {{ notification.body|safe }}<strong>({{ notification.sender.status }})</strong></a>
+                        {% endif %}
+                        {% endfor %}
+                        </div>
+                        {% endif %}
                     </div>
-                </div>
+                {% endif %}
                 <!-- END NOTIFICATIONS -->
 
                 <div class="header-login d-none d-md-block">

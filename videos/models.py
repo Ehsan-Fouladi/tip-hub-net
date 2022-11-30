@@ -62,3 +62,23 @@ class Like(models.Model):
         verbose_name = "لیک"
         verbose_name_plural = "لایک ها"
         ordering = ("created_at",)
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="notification",verbose_name="نام کاربری", default=True)
+    body = models.TextField(verbose_name="متن اعلان")
+    time_created=models.DateTimeField(auto_now_add=True,verbose_name="تاریخ ثبت")
+    is_admin = models.BooleanField(default=True)
+    active = models.ForeignKey(Video, on_delete=models.CASCADE, related_name="notification",null=True,blank=True,verbose_name="فعال هست یا خیر", default=True)
+
+    def get_absulot_url(self):
+        return reverse("account:panel_user")
+
+    def __str__(self):
+        return f'{self.is_admin} - {self.active}'
+
+    class Meta:
+        ordering=("-active",)
+        verbose_name = "اطلاع رسانی"
+        verbose_name_plural = "اطلاع رسانی ها"
+

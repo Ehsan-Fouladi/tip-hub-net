@@ -1,4 +1,5 @@
 {% load static %}
+{% load crispy_forms_tags  %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,7 +71,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="{% static "adminlte/dist/img/user8-128x128.jpg" %}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="#" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   John Pierce
@@ -86,7 +87,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="{% static "adminlte/dist/img/user3-128x128.jpg" %}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="#" alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Nora Silvester
@@ -128,6 +129,7 @@
     </ul>
   </nav>
   <!-- /.navbar -->
+
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -152,7 +154,6 @@
           <a href="#" class="d-block">{{ request.user }}</a>
         </div>
       </div>
-
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -189,30 +190,13 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{% url "account:author" user.pk %}" class="nav-link active">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                درخواست معلم شدن
-              </p>
-            </a>
-          </li>
-          {% if user.is_admin %}
-          <li class="nav-item">
-            <a href="{% url "account:notifications" %}" class="nav-link active">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                اطلاع رسانی    
-              </p>
-            </a>
-          </li>
-          {% endif %}
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
+
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -220,7 +204,6 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <span class="badge badge-info">کاربر گرامی خوش امدید ابتدا نام کاربری خود را از بخش پروفایل اضافه کنید</span>
             <h1 class="m-0 text-dark">پنل کاربری</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -237,60 +220,31 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-12">
+        <div class="col-md-12">
             <div class="card card-primary">
               <div class="card-header">
-                لیست ویدیو ها
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body table-responsive p-0">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>عضویت ها</th>
-                      <th>موضوع</th>
-                      <th>ویدیو</th>
-                      <th>عکس</th>
-                      <th>زمان انتشار</th>
-                      <th>انتشار</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for video in object_list %}
-                    <tr>
-                      <td>{{ video.user.username }}</td>
-                      <td>{{ video.body|striptags|truncatewords:"10" }}</td>
-                      <td><video src="{{ video.video.url }}" width="120"></video></td>
-                      <td><img src="{{ video.image.url }}" width="120"></td>
-                      <td>{{ video.time }}</td>
-                      <td>
-                        {% if video.status %}
-                        <span class="badge badge-info">تهید شد</span>
-                        <a target="_blank" class="badge badge-primary" href="{% url 'home:detail' video.id video.slug %}">نمایش ویدیو</a>
-                        <a class="badge badge-success" href="{% url "account:panel_update" video.pk %}">بروزرسانی</a>
-                        {% else %}
-                        <span class="badge badge-danger">درحال تهید ادمین </span>
-                        {% endif %}
-
-                        {% if user.is_admin %}
-                        <a class="badge badge-success" href="{% url "account:panel_update" video.pk %}">بروزرسانی</a>
-                        {% endif %}
-
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
+                <h3 class="card-title mb-0 float-left">افزودن ویدیو</h3>
+                </div>
+              <div class="card-body">
+                <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="row">
+                    <div class="col-12">
+                        {{ form.user|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.body|as_crispy_field }}
+                    </div>
+                    <div class="col-12">
+                        {{ form.active|as_crispy_field }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.is_admin|as_crispy_field }}
+                    </div>
+                </div>
+                <button class="btn btn-success">ارسال</button>
+            </form>
             </div>
-            <!-- /.card -->
-          </div>
         </div>
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>

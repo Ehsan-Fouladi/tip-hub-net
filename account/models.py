@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     username = models.CharField(verbose_name='نام کاربری', null = True, max_length=255)
     number = models.CharField(max_length=12 ,verbose_name="شماره تلفن")
-    image = models.ImageField(upload_to='ImageUser/', null=True)
+    image = models.ImageField(upload_to='ImageUser/', null=True, blank=True)
     author = models.CharField(max_length=200)
     about_user = models.TextField(null=True)
     is_active = models.BooleanField(default=True)

@@ -220,7 +220,6 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <span class="badge badge-info">کاربر گرامی خوش امدید ابتدا نام کاربری خود را از بخش پروفایل اضافه کنید</span>
             <h1 class="m-0 text-dark">پنل کاربری</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -242,19 +241,17 @@
           <div class="col-12">
             <div class="card card-primary">
               <div class="card-header">
-                لیست ویدیو ها
+                اطلاع رسانی ها
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>عضویت ها</th>
-                      <th>موضوع</th>
-                      <th>ویدیو</th>
-                      <th>عکس</th>
-                      <th>زمان انتشار</th>
-                      <th>انتشار</th>
+                      <th>عضو ها</th>
+                      <th>اطلاع رسانی</th>
+                      <th>وعضیت</th>
+                      <th>تاریخ ایجاد</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -262,20 +259,17 @@
                     <tr>
                       <td>{{ video.user.username }}</td>
                       <td>{{ video.body|striptags|truncatewords:"10" }}</td>
-                      <td><video src="{{ video.video.url }}" width="120"></video></td>
-                      <td><img src="{{ video.image.url }}" width="120"></td>
-                      <td>{{ video.time }}</td>
+                      <td>{{ video.is_admin }}</td>
+                      <td>{{ video.time_created }}</td>
                       <td>
-                        {% if video.status %}
-                        <span class="badge badge-info">تهید شد</span>
-                        <a target="_blank" class="badge badge-primary" href="{% url 'home:detail' video.id video.slug %}">نمایش ویدیو</a>
-                        <a class="badge badge-success" href="{% url "account:panel_update" video.pk %}">بروزرسانی</a>
-                        {% else %}
-                        <span class="badge badge-danger">درحال تهید ادمین </span>
+                        
+                        {% if video.is_admin %}
+                        <span class="badge badge-info"> ایجاد شد</span>
                         {% endif %}
 
                         {% if user.is_admin %}
-                        <a class="badge badge-success" href="{% url "account:panel_update" video.pk %}">بروزرسانی</a>
+                        <a class="badge badge-success" href="{% url "account:notifications_update" video.pk %}">بروزرسانی</a>
+                        <a class="badge badge-dark" href="{% url "account:notifications_create" video.pk %}">افزودن</a>
                         {% endif %}
 
                       </td>

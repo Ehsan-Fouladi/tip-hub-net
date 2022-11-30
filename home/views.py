@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import ListView
+from django.views.generic import ListView, View
 from django.core.paginator import Paginator
-from videos.models import Video, Comment, Like
+from videos.models import Video, Comment, Like, Notification
 from django.http import JsonResponse
+
 
 class Home(ListView):
     model = Video
@@ -29,7 +30,7 @@ def Search(request):
     context = {'object_list': object}
     return render(request, "home/video-list.html", context)
 
-
+# system like and view and comment
 def VideoDetail(request, pk, slug):
     video = get_object_or_404(Video, id=pk, slug=slug)
     # view
@@ -55,6 +56,7 @@ def VideoDetail(request, pk, slug):
     return render(request, 'home/video-detail.html', context)
 
 
+# system like
 def likeDetail(request, slug, pk):
     try:
         like = Like.objects.get(video__slug=slug, user_id=request.user.id)
@@ -63,3 +65,12 @@ def likeDetail(request, slug, pk):
     except:
         Like.objects.create(video_id=pk, user_id=request.user.id)
     return JsonResponse({"response":"liked"})
+
+
+
+class NotificationView(View):
+    def get(self,pk):
+        notification=Notification.objects.get(id=pk)
+        urls=notification.active.get_absulot_url()
+        notification.delete()
+        return redirect(urls)

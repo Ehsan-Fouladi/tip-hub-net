@@ -85,4 +85,7 @@ class UserProFileForm(forms.ModelForm):
 class TeacherForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["author", "about_user"]
+        fields = ["author", "about_user", 'image']
+        widgets={"image":forms.FileInput(attrs={"class":"form-control",}),}
+
+        
