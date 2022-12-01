@@ -3,6 +3,20 @@ from account.models import User
 from django.shortcuts import reverse
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=100, unique=True)
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Category"
+        ordering = ['-name',]
+
+
 class Video(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='videos', verbose_name='اسم', default=True)
     body = models.TextField(verbose_name='متن')
@@ -12,6 +26,7 @@ class Video(models.Model):
     image = models.ImageField(upload_to="image/", verbose_name='عکس')
     views = models.IntegerField(blank=True, default=0, verbose_name='بازدید')
     created = models.DateTimeField(auto_now_add=True, verbose_name='زمان')
+    category = models.ManyToManyField(Category, verbose_name="دسته بندی", related_name="videos")
     time = models.TimeField(auto_now_add=True, verbose_name="ساعت")
     status = models.BooleanField(null=True, blank=True, verbose_name="وضیعت")
 
@@ -81,4 +96,3 @@ class Notification(models.Model):
         ordering=("-active",)
         verbose_name = "اطلاع رسانی"
         verbose_name_plural = "اطلاع رسانی ها"
-

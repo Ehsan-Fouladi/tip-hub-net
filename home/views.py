@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, View
 from django.core.paginator import Paginator
-from videos.models import Video, Comment, Like, Notification
+from videos.models import Video, Comment, Like, Notification, Category
 from django.http import JsonResponse
 
 
@@ -10,6 +10,11 @@ class Home(ListView):
     ordering = ['-user',]
     paginate_by = 6
     template_name = "home/home.html"
+
+def category(request, slug):
+    cat = get_object_or_404(Category, slug=slug)
+    context = {'object_list': cat }
+    return render(request, "home/category.html", context)
 
 
 def VideoList(request):

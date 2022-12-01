@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # my_pega
     "django_cleanup.apps.CleanupConfig",
     "crispy_forms",
+    "mptt",
 ]
 
 MIDDLEWARE = [

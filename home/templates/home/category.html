@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %} مجله {% endblock %}
+{% block title %}لیست تمامی ویدیو ها{% endblock %}
 {% block content %}
 <main>
     <section class="py-5">
         <div class="container">
             <div class="d-flex align-items-center justify-content-between mb-3">
-                <h2 class="title-section">تازه ترین ویدیوها </h2>
-                <a href="{% url "home:video_all" %}" class="btn custom-btn">
-                    نمایش همه
-                </a>
+                <h2 class="title-section">همه ویدیوها</h2>
             </div>
+            <!-- all_video object-list -->
             <div class="row">
-                {% for video in object_list %}
+                {% for video in object_list.videos.all %}
                 {% if video.status %}
                 <!-- item -->
                 <div class="col-md-6 col-lg-4 my-2">
@@ -58,8 +56,30 @@
                 <!-- end item -->
                 {% endfor %}
             </div>
+            <!-- pageintor -->
+            <!-- page_obj -->
+            <div class="d-flex align-items-center justify-content-center mb-3 pagination">
+                {% if object_list.has_other_pages %}
+
+                {% if object_list.has_next %}
+                <a href="?page={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-right"></i></a>
+                {% endif %}
+
+                {% for item in object_list.paginator.page_range %}
+                {% if object_list.number == item %}
+                <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="active mx-1">{{ item }}</a>
+                {% else %}
+                <a href="?page={{ item }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1">{{ item }}</a>
+                {% endif %}
+                {% endfor %}
+
+                {% if object_list.has_previous %}
+                <a href="?page={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="mx-1"><i class="fa fa-chevron-left"></i></a>
+                {% endif %}
+
+                {% endif %}
+            </div>
         </div>
     </section>
-
 </main>
 {% endblock %}

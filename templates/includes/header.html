@@ -69,8 +69,22 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <nav class="nav-menu nav-menu-pc  d-none d-md-flex px-4" id="navbar">
+        {% for cat in Category %}
+            <li id="li-{{ forloop.counter }}" class="mx-3 menu-item">
+                <a href="{% url "home:category"  cat.slug %}" class="nav-menu-item">
+                    {{ cat.name }}
+                </a>
+                <ul class="sub-menu">
+                    {% for child in cat.videos.all %}
+                        <a href="">{{ child.category.all.name }}</a>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </nav>
 
 </header>
 
