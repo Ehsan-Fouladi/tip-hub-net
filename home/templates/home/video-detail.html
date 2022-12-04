@@ -59,10 +59,9 @@
                             <div class="labels">
                                 <h4 class="my-3">برچسب ها</h4>
                                 <ul class="d-flex align-items-center">
-                                    <li><a href="#" title="">#گردشگری</a></li>
-                                    <li><a href="#" title="">#تفریحی </a></li>
-                                    <li><a href="#" title="">#دشت نور</a></li>
-                                    <li><a href="#" title="">#مکان های تفریحی</a></li>
+                                    {% for cat in video.category.all %}
+                                    <li><a href="{% url "home:category"  cat.slug %}">#{{ cat.name }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                         </div>
