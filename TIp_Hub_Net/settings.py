@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     # my_app
     "home.apps.HomeConfig",
     "account.apps.AccountConfig",
@@ -46,6 +48,10 @@ INSTALLED_APPS = [
     "django_cleanup.apps.CleanupConfig",
     "crispy_forms",
     "mptt",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -140,7 +146,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'my_account.User'
 
 AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend',
-                            'account.authentication.EmailAuthBackend']
+                            'account.authentication.EmailAuthBackend',
+                         'allauth.account.auth_backends.AuthenticationBackend']
+# Additional configuration settings
+# add google login is rejester
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_LOGOUT_ON_GET= True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_REQUIRED = True
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}

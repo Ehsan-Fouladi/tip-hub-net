@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 {% block content %}
     <main>
         <section class="py-5">
@@ -27,7 +28,7 @@
                                 <div class="">
 
                                     <div class="social-accunt">
-                                        <a title="Google" class="" href="">
+                                        <a title="Google" class="" href="{% provider_login_url 'google' %}">
                                             <img height="24" src="{% static "image/google.svg" %}" class="d-block m-auto">
                                         </a>
                                     </div>
