@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-w0f%0*z@rnf8xnnvv!m#vlaw!!h)epue6zhyt@awfl%z#&texn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -69,7 +69,7 @@ ROOT_URLCONF = 'TIp_Hub_Net.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
+        'DIRS': [BASE_DIR / 'templates', 'cb-dj-sso-main']
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -155,6 +155,7 @@ AUTHENTICATION_BACKENDS=['django.contrib.auth.backends.ModelBackend',
 # add google login is rejester
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 SOCIALACCOUNT_QUERY_EMAIL = True
 ACCOUNT_LOGOUT_ON_GET= True
 ACCOUNT_UNIQUE_EMAIL = True
