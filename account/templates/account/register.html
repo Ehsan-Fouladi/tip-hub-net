@@ -10,7 +10,6 @@
                         <div class="custom-bg p-2">
 
                             <div class="my-3 text-center">عضویت در سایت</div>
-                            <a href="#" class="fa fa-info">کاربر گرامی برای ورود لطف دوباره شماره تلفن خود را وارد کنید</a>
                             <form method="post">
                                 {% csrf_token %}
                                 {{ form.errors }}
@@ -42,4 +41,7 @@
             </div>
         </section>
     </main>
+    <script>
+    alert("کاربر گرامی لطف برای ورود مجدد شماره خود را وارد کنید")
+    </script>
 {% endblock %}
